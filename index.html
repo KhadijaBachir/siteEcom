@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FashionHub - Mode Tendances</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --dark: #292F36;
+            --light: #F7FFF7;
+            --accent: #FFE66D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 15px 5%;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a i {
+            margin-right: 8px;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 500px;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('nav.avif') center/cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 700px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Products Section */
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 8px 20px;
+            margin: 0 10px 10px;
+            background-color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            border: 1px solid #ddd;
+        }
+
+        .category-tab.active, .category-tab:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .product-price del {
+            color: #999;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .add-to-cart {
+            flex-grow: 1;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+
+        .add-to-cart:hover {
+            background-color: #e05555;
+        }
+
+        .wishlist {
+            width: 40px;
+            height: 40px;
+            background-color: #f1f1f1;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wishlist.active, .wishlist:hover {
+            color: var(--primary);
+        }
+
+        /* Cart Preview */
+        .cart-preview {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: 350px;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 99;
+            display: none;
+        }
+
+        .cart-items {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .remove-item {
+            color: #ff6b6b;
+            cursor: pointer;
+            align-self: center;
+        }
+
+        .cart-total {
+            font-weight: 700;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            padding: 50px 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* About Page */
+        .about-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            gap: 40px;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Contact Page */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-info {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .contact-info h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .contact-info-item i {
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 20px;
+            width: 30px;
+        }
+
+        .contact-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .contact-form h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bbb;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .about-section {
+                flex-direction: column;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            nav ul li {
+                margin-left: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px 10px;
+            }
+            
+            .hero {
+                height: 400px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .wishlist {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+            }
+            
+            .cart-preview {
+                width: 300px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Fashion<span>Hub</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="#" class="nav-link" data-page="products"><i class="fas fa-tshirt"></i> Vêtements</a></li>
+                    <li><a href="#" class="nav-link" data-page="shoes"><i class="fas fa-shoe-prints"></i> Chaussures</a></li>
+                    <li><a href="#" class="nav-link" data-page="accessories"><i class="fas fa-rings"></i> Accessoires</a></li>
+                    <li><a href="#" class="nav-link" data-page="about"><i class="fas fa-info-circle"></i> À propos</a></li>
+                    <li><a href="#" class="nav-link" data-page="contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    <li>
+                        <a href="#" id="cart-icon" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Cart Preview -->
+    <div class="cart-preview" id="cart-preview">
+        <h3>Votre Panier</h3>
+        <div class="cart-items" id="cart-items">
+            <p class="empty-cart">Votre panier est vide</p>
+        </div>
+        <div class="cart-total">
+            Total: <span id="cart-total">0</span> FCFA
+        </div>
+        <button class="btn checkout-btn" id="checkout-btn">Passer la commande</button>
+    </div>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Découvrez la nouvelle collection</h1>
+            <p>Des vêtements tendance, des chaussures stylées et des accessoires uniques pour votre garde-robe</p>
+            <a href="#" class="btn nav-link" data-page="products">Explorer maintenant</a>
+        </section>
+
+        <!-- Featured Products -->
+        <div class="section-title">
+            <h2>Nos Produits Phares</h2>
+            <p>Découvrez nos articles les plus populaires cette saison</p>
+        </div>
+
+        <div class="products-container">
+            <div class="products-grid" id="featured-products">
+                <!-- Produits chargés dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Page -->
+    <div id="products" class="page">
+        <div class="section-title">
+            <h2>Nos Vêtements</h2>
+            <p>Découvrez notre collection de vêtements tendance</p>
+        </div>
+
+        <div class="products-container">
+            <div class="category-tabs">
+                <div class="category-tab active" data-category="all">Tous</div>
+                <div class="category-tab" data-category="men">Hommes</div>
+                <div class="category-tab" data-category="women">Femmes</div>
+                <div class="category-tab" data-category="kids">Enfants</div>
+                <div class="category-tab" data-category="unisex">Unisexe</div>
+            </div>
+
+            <div class="products-grid" id="clothing-products">
+                <!-- Produits chargés dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Shoes Page -->
+    <div id="shoes" class="page">
+        <div class="section-title">
+            <h2>Nos Chaussures</h2>
+            <p>Des chaussures stylées pour toutes les occasions</p>
+        </div>
+
+        <div class="products-container">
+            <div class="category-tabs">
+                <div class="category-tab active" data-category="all">Tous</div>
+                <div class="category-tab" data-category="sneakers">Sneakers</div>
+                <div class="category-tab" data-category="sandals">Sandales</div>
+                <div class="category-tab" data-category="boots">Bottes</div>
+                <div class="category-tab" data-category="heels">Talons</div>
+            </div>
+
+            <div class="products-grid" id="shoes-products">
+                <!-- Produits chargés dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Accessories Page -->
+    <div id="accessories" class="page">
+        <div class="section-title">
+            <h2>Nos Accessoires</h2>
+            <p>Complétez votre look avec nos accessoires tendance</p>
+        </div>
+
+        <div class="products-container">
+            <div class="category-tabs">
+                <div class="category-tab active" data-category="all">Tous</div>
+                <div class="category-tab" data-category="bags">Sacs</div>
+                <div class="category-tab" data-category="jewelry">Bijoux</div>
+                <div class="category-tab" data-category="hats">Chapeaux</div>
+                <div class="category-tab" data-category="watches">Montres</div>
+            </div>
+
+            <div class="products-grid" id="accessories-products">
+                <!-- Produits chargés dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <div class="page-content">
+            <div class="section-title">
+                <h2>À propos de FashionHub</h2>
+                <p>Découvrez notre histoire et notre passion pour la mode</p>
+            </div>
+
+            <div class="about-section">
+                <div class="about-text">
+                    <h3>Notre Histoire</h3>
+                    <p>Fondée en 2020, FashionHub est née de la passion pour la mode et du désir de rendre les dernières tendances accessibles à tous. Ce qui a commencé comme une petite boutique en ligne est rapidement devenu une référence dans le monde de la mode en ligne.</p>
+                    <p>Notre mission est simple : offrir des vêtements, chaussures et accessoires de qualité à des prix abordables, tout en promouvant une mode responsable et durable.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Notre équipe">
+                </div>
+            </div>
+
+            <div class="about-section" style="flex-direction: row-reverse;">
+                <div class="about-text">
+                    <h3>Notre Philosophie</h3>
+                    <p>Chez FashionHub, nous croyons que la mode devrait être amusante, accessible et durable. Nous travaillons avec des fournisseurs éthiques et nous engageons à réduire notre impact environnemental.</p>
+                    <p>Notre équipe de stylistes parcourt le monde pour dénicher les dernières tendances et vous les apporter directement, où que vous soyez.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Notre philosophie">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <div class="page-content">
+            <div class="section-title">
+                <h2>Contactez-nous</h2>
+                <p>Nous sommes là pour répondre à toutes vos questions</p>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Nos coordonnées</h3>
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Adresse</h4>
+                            <p>123 Rue de la Mode, Dakar, Sénégal</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <p>+221 77 123 45 67</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>contact@fashionhub.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Heures d'ouverture</h4>
+                            <p>Lun-Sam: 8h-20h</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Envoyez-nous un message</h3>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nom complet</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Sujet</label>
+                            <input type="text" id="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>FashionHub</h4>
+                    <p>Votre destination pour les dernières tendances de mode. Des vêtements, chaussures et accessoires pour toute la famille.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Liens rapides</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="nav-link" data-page="home">Accueil</a></li>
+                        <li><a href="#" class="nav-link" data-page="products">Vêtements</a></li>
+                        <li><a href="#" class="nav-link" data-page="shoes">Chaussures</a></li>
+                        <li><a href="#" class="nav-link" data-page="accessories">Accessoires</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Informations</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="nav-link" data-page="about">À propos</a></li>
+                        <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#">Conditions générales</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Newsletter</h4>
+                    <p>Abonnez-vous pour recevoir nos offres spéciales et les dernières tendances</p>
+                    <form id="newsletter-form">
+                        <input type="email" placeholder="Votre email" required>
+                        <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">S'abonner</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 FashionHub. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Données des produits - Collection complète et tendance
+        const productsData = {
+            featured: [
+            {
+                    id: 1,
+                    name: "Pantalon homme",
+                    price: 12900,
+                    image: "panthom2.avif",
+                    category: "men"
+                },
+              
+                {
+                    id: 9,
+                    name: "Jeans homme",
+                    price: 22900,
+                    oldPrice: 25900,
+                    image: "jeansho.avif",
+                    category: "men",
+                    badge: "Nouveauté"
+                },
+                {
+                    id: 6,
+                    name: "Robe d'été",
+                    price: 21900,
+                    image: "robe1.jpg",
+                    category: "women"
+                },
+               
+                {
+                    id: 8,
+                    name: "Jupe courte",
+                    price: 18900,
+                    image: "jupe4.jpg",
+                    category: "women"
+                },
+                
+                {
+                    id: 24,
+                    name: "Pantalon homme",
+                    price: 12900,
+                    image: "panthom2.avif",
+                    category: "men"
+                },
+                
+                {
+                    id: 34,
+                    name: "Sac à main",
+                    price: 22900,
+                    image: "sac4.avif",
+                    category: "bags"
+                },
+                {
+                id: 17,
+                    name: "Collier perles fines",
+                    price: 12900,
+                    oldPrice: 14900,
+                    image: "collier.avif",
+                    category: "jewelry",
+                    badge: "Élégant"
+                },
+                {
+                    id: 34,
+                    name: "Sac à main",
+                    price: 22900,
+                    image: "sac7.jpg",
+                    category: "bags"
+                },
+               
+                {
+                    id: 18,
+                    name: "Montre femme",
+                    price: 9900,
+                    image: "montre1.avif",
+                    category: "jewelry"
+                },
+            ],
+            clothing: [
+                {
+                    id: 4,
+                    name: "T-shirt oversize graphique",
+                    price: 8900,
+                    image: "teeshirt1.jpg",
+                    category: "men"
+                },
+                {
+                    id: 5,
+                    name: "Jeans baggy délavé",
+                    price: 14900,
+                    oldPrice: 17900,
+                    image: "jeansfem1.avif",
+                    category: "women",
+                    badge: "Promo"
+                },
+                {
+                    id: 6,
+                    name: "Robe d'été",
+                    price: 21900,
+                    image: "robe1.jpg",
+                    category: "women"
+                },
+                {
+                    id: 7,
+                    name: "Manteau femme",
+                    price: 24900,
+                    image: "mateaufem1.jpg",
+                    category: "women"
+                },
+                {
+                    id: 8,
+                    name: "Jupe blanc",
+                    price: 18900,
+                    image: "jupe1.avif",
+                    category: "women"
+                },
+                {
+                    id: 9,
+                    name: "Pantalon homme",
+                    price: 22900,
+                    oldPrice: 25900,
+                    image: "panthom1.avif",
+                    category: "men",
+                    badge: "Nouveauté"
+                },
+                {
+                    id: 23,
+                    name: "Pull cachemire",
+                    price: 27900,
+                    image: "pullfem.avif",
+                    category: "women"
+                },
+                {
+                    id: 24,
+                    name: "Pantalon homme",
+                    price: 12900,
+                    image: "panthom2.avif",
+                    category: "men"
+                },
+                {
+                    id: 25,
+                    name: "Robe midi fleurie",
+                    price: 19900,
+                    image: "robe2.jpg",
+                    category: "women"
+                },
+                {
+                    id: 26,
+                    name: "Costume 3 pièces",
+                    price: 45900,
+                    oldPrice: 49900,
+                    image: "costume1.avif",
+                    category: "men",
+                    badge: "Luxe"
+                },
+                {
+                    id: 35,
+                    name: "Manteau femme",
+                    price: 38900,
+                    image: "manteaufem2.jpg",
+                    category: "women"
+                },
+                {
+                    id: 36,
+                    name: "jupe été",
+                    price: 14900,
+                    image: "jup6.jpg",
+                    category: "women"
+                },
+                {
+                    id: 24,
+                    name: "Tee-Shirt",
+                    price: 12900,
+                    image: "teeshirt3.avif",
+                    category: "men"
+                },
+                {
+                    id: 25,
+                    name: "Robe marron",
+                    price: 19900,
+                    image: "robe4.jpg",
+                    category: "women"
+                },
+                {
+                    id: 26,
+                    name: "Costume 3 pièces",
+                    price: 45900,
+                    oldPrice: 49900,
+                    image: "cost3.jpg",
+                    category: "men",
+                    badge: "Luxe"
+                },
+                {
+                    id: 7,
+                    name: "Jeans blue",
+                    price: 24900,
+                    image: "jeansfem2.avif",
+                    category: "women"
+                },
+                
+                {
+                    id: 9,
+                    name: "Jeans homme",
+                    price: 22900,
+                    oldPrice: 25900,
+                    image: "jeansho.avif",
+                    category: "men",
+                    badge: "Nouveauté"
+                },
+                {
+                    id: 6,
+                    name: "Robe d'été",
+                    price: 21900,
+                    image: "robe1.jpg",
+                    category: "women"
+                },
+               
+                {
+                    id: 8,
+                    name: "Jupe courte",
+                    price: 18900,
+                    image: "jupe4.jpg",
+                    category: "women"
+                },
+                
+                {
+                    id: 24,
+                    name: "Pantalon homme",
+                    price: 12900,
+                    image: "panthom2.avif",
+                    category: "men"
+                },
+                {
+                    id: 25,
+                    name: "Robe midi fleurie",
+                    price: 19900,
+                    image: "robe2.jpg",
+                    category: "women"
+                },
+            ],
+            shoes: [
+                {
+                    id: 10,
+                    name: "Baskets montantes",
+                    price: 28900,
+                    image: "chaussbaskfem.avif",
+                    category: "boots"
+                },
+                {
+                    id: 11,
+                    name: "Chussures rouge",
+                    price: 17900,
+                    oldPrice: 19900,
+                    image: "chauss.avif",
+                    category: "Talons",
+                    badge: "Été"
+                },
+                {
+                    id: 12,
+                    name: "Chaussures en cuir verni",
+                    price: 34900,
+                    image: "chaussurefem2.avif",
+                    category: "sneakers"
+                },
+                {
+                    id: 13,
+                    name: "Mules en daim",
+                    price: 21900,
+                    image: "chaussurefem3.avif",
+                    category: "sandals"
+                },
+                {
+                    id: 14,
+                    name: "Derbies en cuir",
+                    price: 26900,
+                    image: "chausshom.avif",
+                    category: "sneakers"
+                },
+                {
+                    id: 15,
+                    name: "Chaussures homme ",
+                    price: 31900,
+                    oldPrice: 34900,
+                    image: "chaussehomhall.avif",
+                    category: "boots",
+                    badge: "Hiver"
+                },
+              
+                {
+                    id: 28,
+                    name: "Talon montante",
+                    price: 22900,
+                    image: "tal1.avif",
+                    category: "talons"
+                },
+                {
+                    id: 15,
+                    name: "Talon beige",
+                    price: 31900,
+                    oldPrice: 34900,
+                    image: "tal2.avif",
+                    category: "talons",
+                    badge: "été"
+                },
+              
+                {
+                    id: 28,
+                    name: "Talon",
+                    price: 22900,
+                    image: "tal3.avif",
+                    category: "talons"
+                },
+               
+               
+            ],
+            accessories: [
+                {
+                    id: 16,
+                    name: "Sac banane cuir",
+                    price: 15900,
+                    image: "sac2.avif",
+                    category: "bags"
+                },
+                {
+                    id: 17,
+                    name: "Collier perles fines",
+                    price: 12900,
+                    oldPrice: 14900,
+                    image: "collier.avif",
+                    category: "jewelry",
+                    badge: "Élégant"
+                },
+                {
+                    id: 34,
+                    name: "Sac à main",
+                    price: 22900,
+                    image: "sac7.jpg",
+                    category: "bags"
+                },
+               
+                {
+                    id: 18,
+                    name: "Montre femme",
+                    price: 9900,
+                    image: "montre1.avif",
+                    category: "jewelry"
+                },
+                {
+                    id: 19,
+                    name: "Montre homme",
+                    price: 11900,
+                    image: "montre2.avif",
+                    category: "jewelry"
+                },
+                {
+                    id: 39,
+                    name: "Sac à main",
+                    price: 22900,
+                    image: "sac8.avif",
+                    category: "bags"
+                },
+               
+                {
+                    id: 20,
+                    name: "sac élégant",
+                    price: 14900,
+                    image: "sac3.avif",
+                    category: "bags"
+                },
+                {
+                    id: 21,
+                    name: "Collier magnifique",
+                    price: 8900,
+                    oldPrice: 10900,
+                    image: "collier1.avif",
+                    category: "jewelry",
+                    badge: "Promo"
+                },
+                {
+                    id: 31,
+                    name: "Collier en perle",
+                    price: 15900,
+                    image: "collier2.avif",
+                    category: "jewelry"
+                },
+                {
+                    id: 32,
+                    name: "Collier en cristaux",
+                    price: 17900,
+                    image: "collier3.jpg",
+                    category: "jewelry"
+                },
+            
+                {
+                    id: 34,
+                    name: "Sac à main",
+                    price: 22900,
+                    image: "sac4.avif",
+                    category: "bags"
+                },
+               
+                {
+                    id: 38,
+                    name: "Sac à main",
+                    price: 32900,
+                    image: "sac5.avif",
+                    category: "bags"
+                },
+               
+            ]
+        };
+
+        // Panier et fonctionnalités
+        let cart = [];
+        let currentPage = 'home';
+
+        // Éléments du DOM
+        const cartIcon = document.getElementById('cart-icon');
+        const cartPreview = document.getElementById('cart-preview');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const cartCountElement = document.querySelector('.cart-count');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+        const featuredProductsGrid = document.getElementById('featured-products');
+        const clothingProductsGrid = document.getElementById('clothing-products');
+        const shoesProductsGrid = document.getElementById('shoes-products');
+        const accessoriesProductsGrid = document.getElementById('accessories-products');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const contactForm = document.getElementById('contact-form');
+        const newsletterForm = document.getElementById('newsletter-form');
+
+        // Afficher les produits
+        function displayProducts(products, container) {
+            container.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">
+                            ${product.price.toLocaleString()} FCFA
+                            ${product.oldPrice ? `<del>${product.oldPrice.toLocaleString()} FCFA</del>` : ''}
+                        </div>
+                        <div class="product-actions">
+                            <button class="add-to-cart" data-id="${product.id}">Ajouter au panier</button>
+                            <button class="wishlist" data-id="${product.id}">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(productCard);
+            });
+        }
+
+        // Ajouter au panier
+        function addToCart(productId) {
+            // Trouver le produit dans toutes les catégories
+            let product;
+            for (const category in productsData) {
+                product = productsData[category].find(p => p.id === productId);
+                if (product) break;
+            }
+            
+            if (!product) return;
+            
+            // Vérifier si le produit est déjà dans le panier
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            
+            // Animation feedback
+            const btn = document.querySelector(`.add-to-cart[data-id="${productId}"]`);
+            if (btn) {
+                btn.textContent = 'Ajouté !';
+                setTimeout(() => {
+                    btn.textContent = 'Ajouter au panier';
+                }, 1000);
+            }
+        }
+
+        // Mettre à jour le panier
+        function updateCart() {
+            // Sauvegarder dans localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Mettre à jour le compteur
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountElement.textContent = totalItems;
+            
+            // Afficher les articles
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="empty-cart">Votre panier est vide</p>';
+                cartTotalElement.textContent = '0';
+                return;
+            }
+            
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-price">${item.price.toLocaleString()} FCFA x ${item.quantity}</div>
+                    </div>
+                    <div class="remove-item" data-id="${item.id}">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                
+                cartItemsContainer.appendChild(cartItem);
+            });
+            
+            // Mettre à jour le total
+            cartTotalElement.textContent = total.toLocaleString();
+        }
+
+        // Retirer du panier
+        function removeFromCart(productId) {
+            const index = cart.findIndex(item => item.id === productId);
+            
+            if (index !== -1) {
+                if (cart[index].quantity > 1) {
+                    cart[index].quantity--;
+                } else {
+                    cart.splice(index, 1);
+                }
+                
+                updateCart();
+            }
+        }
+
+        // Changer de page
+        function showPage(pageId) {
+            currentPage = pageId;
+            
+            // Masquer toutes les pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Afficher la page demandée
+            document.getElementById(pageId).classList.add('active');
+            
+            // Mettre à jour l'URL
+            history.pushState(null, null, `#${pageId}`);
+            
+            // Faire défiler vers le haut
+            window.scrollTo(0, 0);
+        }
+
+        // Filtrer par catégorie
+        function filterByCategory(category, page) {
+            // Mettre à jour les onglets actifs
+            const tabs = document.querySelectorAll(`#${page} .category-tab`);
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-category') === category) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Filtrer les produits
+            let products = [];
+            let container;
+            
+            switch(page) {
+                case 'products':
+                    products = productsData.clothing;
+                    container = clothingProductsGrid;
+                    break;
+                case 'shoes':
+                    products = productsData.shoes;
+                    container = shoesProductsGrid;
+                    break;
+                case 'accessories':
+                    products = productsData.accessories;
+                    container = accessoriesProductsGrid;
+                    break;
+            }
+            
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
+            
+            displayProducts(filteredProducts, container);
+        }
+
+        // Charger les données depuis localStorage
+        function loadFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCart();
+            }
+        }
+
+        // Gestion des événements de clic
+        document.addEventListener('click', function(e) {
+            // Gestion des boutons "Ajouter au panier"
+            if (e.target.classList.contains('add-to-cart') || e.target.closest('.add-to-cart')) {
+                e.preventDefault();
+                const btn = e.target.classList.contains('add-to-cart') ? e.target : e.target.closest('.add-to-cart');
+                const productId = parseInt(btn.getAttribute('data-id'));
+                addToCart(productId);
+            }
+            
+            // Gestion des boutons "Wishlist"
+            if (e.target.classList.contains('wishlist') || e.target.closest('.wishlist')) {
+                e.preventDefault();
+                const btn = e.target.classList.contains('wishlist') ? e.target : e.target.closest('.wishlist');
+                btn.querySelector('i').classList.toggle('far');
+                btn.querySelector('i').classList.toggle('fas');
+            }
+            
+            // Gestion des boutons de suppression du panier
+            if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
+                e.preventDefault();
+                const btn = e.target.classList.contains('remove-item') ? e.target : e.target.closest('.remove-item');
+                const productId = parseInt(btn.getAttribute('data-id'));
+                removeFromCart(productId);
+            }
+        });
+
+        // Événements
+        cartIcon.addEventListener('click', function(e) {
+            e.preventDefault();
+            cartPreview.style.display = cartPreview.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Fermer le panier quand on clique ailleurs
+        document.addEventListener('click', function(e) {
+            if (!cartIcon.contains(e.target) && !cartPreview.contains(e.target)) {
+                cartPreview.style.display = 'none';
+            }
+        });
+
+        // Navigation
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const page = this.getAttribute('data-page');
+                showPage(page);
+            });
+        });
+
+        // Filtrage par catégorie
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                const page = this.closest('.page').id;
+                filterByCategory(category, page);
+            });
+        });
+
+        // Passer commande
+        checkoutBtn.addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('Votre panier est vide !');
+                return;
+            }
+            
+            alert(`Commande passée ! Total: ${cartTotalElement.textContent} FCFA\nMerci pour votre achat !`);
+            cart = [];
+            updateCart();
+            cartPreview.style.display = 'none';
+        });
+
+        // Formulaire de contact
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Merci pour votre message ! Nous vous répondrons dès que possible.');
+            this.reset();
+        });
+
+        // Newsletter
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            alert(`Merci pour votre inscription à notre newsletter avec l'email: ${email}`);
+            this.reset();
+        });
+
+        // Gestion du hash URL
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showPage(hash);
+            } else {
+                showPage('home');
+            }
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromStorage();
+            
+            // Afficher les produits
+            displayProducts(productsData.featured, featuredProductsGrid);
+            displayProducts(productsData.clothing, clothingProductsGrid);
+            displayProducts(productsData.shoes, shoesProductsGrid);
+            displayProducts(productsData.accessories, accessoriesProductsGrid);
+            
+            // Afficher la page demandée dans l'URL
+            const hash = window.location.hash.substring(1);
+            if (hash && document.getElementById(hash)) {
+                showPage(hash);
+            } else {
+                showPage('home');
+            }
+        });
+    </script>
+</body>
+</html>
