@@ -24,6 +24,7 @@
         body {
             background-color: var(--light);
             color: var(--dark);
+            overflow-x: hidden;
         }
 
         /* Header */
@@ -42,6 +43,7 @@
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         .logo {
@@ -98,6 +100,14 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
+        }
+
+        /* Menu Mobile */
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
         }
 
         /* Hero Section */
@@ -188,10 +198,12 @@
             border-color: var(--primary);
         }
 
+        /* Grille de produits améliorée */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
+            width: 100%;
         }
 
         .product-card {
@@ -200,6 +212,7 @@
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
         }
 
         .product-card:hover {
@@ -244,6 +257,7 @@
             font-size: 18px;
             margin-bottom: 10px;
             color: var(--dark);
+            word-break: break-word;
         }
 
         .product-price {
@@ -555,7 +569,20 @@
             color: #bbb;
         }
 
-        /* Responsive */
+        /* ==================== */
+        /* RESPONSIVE DESIGN */
+        /* ==================== */
+
+        @media (max-width: 1200px) {
+            .header-container, 
+            .products-container, 
+            .page-content, 
+            .footer-container {
+                max-width: 100%;
+                padding: 0 30px;
+            }
+        }
+
         @media (max-width: 992px) {
             .about-section {
                 flex-direction: column;
@@ -564,9 +591,43 @@
             .contact-container {
                 grid-template-columns: 1fr;
             }
+            
+            .about-image, 
+            .about-text {
+                width: 100%;
+            }
         }
 
         @media (max-width: 768px) {
+            /* Navigation mobile */
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                padding: 15px 0;
+                z-index: 100;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            nav ul li {
+                margin: 0;
+                padding: 10px 30px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            /* Ajustements généraux */
             .hero h1 {
                 font-size: 36px;
             }
@@ -575,35 +636,58 @@
                 font-size: 18px;
             }
             
-            nav ul li {
-                margin-left: 15px;
+            .section-title h2 {
+                font-size: 30px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .product-image {
+                height: 250px;
             }
         }
 
         @media (max-width: 576px) {
+            /* Header */
             .header-container {
-                flex-direction: column;
+                padding: 10px 15px;
             }
             
             .logo {
-                margin-bottom: 15px;
+                font-size: 24px;
             }
             
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            nav ul li {
-                margin: 0 10px 10px;
-            }
-            
+            /* Hero */
             .hero {
                 height: 400px;
             }
             
             .hero h1 {
                 font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            /* Produits */
+            .products-grid {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+            
+            .category-tabs {
+                justify-content: flex-start;
+                padding: 0 10px;
+            }
+            
+            .category-tab {
+                margin: 0 5px 10px;
+                padding: 6px 15px;
+                font-size: 14px;
             }
             
             .product-actions {
@@ -616,9 +700,30 @@
                 width: 100%;
             }
             
+            /* Panier */
             .cart-preview {
                 width: 300px;
                 right: 10px;
+            }
+            
+            /* Footer */
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .section-title h2 {
+                font-size: 26px;
             }
         }
     </style>
@@ -633,7 +738,7 @@
                     <li><a href="#" class="nav-link" data-page="home"><i class="fas fa-home"></i> Accueil</a></li>
                     <li><a href="#" class="nav-link" data-page="products"><i class="fas fa-tshirt"></i> Vêtements</a></li>
                     <li><a href="#" class="nav-link" data-page="shoes"><i class="fas fa-shoe-prints"></i> Chaussures</a></li>
-                    <li><a href="#" class="nav-link" data-page="accessories"><i class="fas fa-rings"></i> Accessoires</a></li>
+                    <li><a href="#" class="nav-link" data-page="accessories"><i class="fas fa-ring"></i> Accessoires</a></li>
                     <li><a href="#" class="nav-link" data-page="about"><i class="fas fa-info-circle"></i> À propos</a></li>
                     <li><a href="#" class="nav-link" data-page="contact"><i class="fas fa-envelope"></i> Contact</a></li>
                     <li>
@@ -644,6 +749,9 @@
                     </li>
                 </ul>
             </nav>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </header>
 
@@ -897,14 +1005,13 @@
         // Données des produits - Collection complète et tendance
         const productsData = {
             featured: [
-            {
+                {
                     id: 1,
                     name: "Pantalon homme",
                     price: 12900,
                     image: "panthom2.avif",
                     category: "men"
                 },
-              
                 {
                     id: 9,
                     name: "Jeans homme",
@@ -921,7 +1028,6 @@
                     image: "robe1.jpg",
                     category: "women"
                 },
-               
                 {
                     id: 8,
                     name: "Jupe courte",
@@ -929,7 +1035,6 @@
                     image: "jupe4.jpg",
                     category: "women"
                 },
-                
                 {
                     id: 24,
                     name: "Pantalon homme",
@@ -937,7 +1042,6 @@
                     image: "panthom2.avif",
                     category: "men"
                 },
-                
                 {
                     id: 34,
                     name: "Sac à main",
@@ -946,7 +1050,7 @@
                     category: "bags"
                 },
                 {
-                id: 17,
+                    id: 17,
                     name: "Collier perles fines",
                     price: 12900,
                     oldPrice: 14900,
@@ -955,13 +1059,12 @@
                     badge: "Élégant"
                 },
                 {
-                    id: 34,
+                    id: 40,
                     name: "Sac à main",
                     price: 22900,
                     image: "sac7.jpg",
                     category: "bags"
                 },
-               
                 {
                     id: 18,
                     name: "Montre femme",
@@ -1062,21 +1165,21 @@
                     category: "women"
                 },
                 {
-                    id: 24,
+                    id: 37,
                     name: "Tee-Shirt",
                     price: 12900,
                     image: "teeshirt3.avif",
                     category: "men"
                 },
                 {
-                    id: 25,
+                    id: 38,
                     name: "Robe marron",
                     price: 19900,
                     image: "robe4.jpg",
                     category: "women"
                 },
                 {
-                    id: 26,
+                    id: 39,
                     name: "Costume 3 pièces",
                     price: 45900,
                     oldPrice: 49900,
@@ -1085,15 +1188,14 @@
                     badge: "Luxe"
                 },
                 {
-                    id: 7,
+                    id: 41,
                     name: "Jeans blue",
                     price: 24900,
                     image: "jeansfem2.avif",
                     category: "women"
                 },
-                
                 {
-                    id: 9,
+                    id: 42,
                     name: "Jeans homme",
                     price: 22900,
                     oldPrice: 25900,
@@ -1102,30 +1204,28 @@
                     badge: "Nouveauté"
                 },
                 {
-                    id: 6,
+                    id: 43,
                     name: "Robe d'été",
                     price: 21900,
                     image: "robe1.jpg",
                     category: "women"
                 },
-               
                 {
-                    id: 8,
+                    id: 44,
                     name: "Jupe courte",
                     price: 18900,
                     image: "jupe4.jpg",
                     category: "women"
                 },
-                
                 {
-                    id: 24,
+                    id: 45,
                     name: "Pantalon homme",
                     price: 12900,
                     image: "panthom2.avif",
                     category: "men"
                 },
                 {
-                    id: 25,
+                    id: 46,
                     name: "Robe midi fleurie",
                     price: 19900,
                     image: "robe2.jpg",
@@ -1146,7 +1246,7 @@
                     price: 17900,
                     oldPrice: 19900,
                     image: "chauss.avif",
-                    category: "Talons",
+                    category: "heels",
                     badge: "Été"
                 },
                 {
@@ -1172,40 +1272,36 @@
                 },
                 {
                     id: 15,
-                    name: "Chaussures homme ",
+                    name: "Chaussures homme",
                     price: 31900,
                     oldPrice: 34900,
                     image: "chaussehomhall.avif",
                     category: "boots",
                     badge: "Hiver"
                 },
-              
                 {
                     id: 28,
                     name: "Talon montante",
                     price: 22900,
                     image: "tal1.avif",
-                    category: "talons"
+                    category: "heels"
                 },
                 {
-                    id: 15,
+                    id: 29,
                     name: "Talon beige",
                     price: 31900,
                     oldPrice: 34900,
                     image: "tal2.avif",
-                    category: "talons",
+                    category: "heels",
                     badge: "été"
                 },
-              
                 {
-                    id: 28,
+                    id: 30,
                     name: "Talon",
                     price: 22900,
                     image: "tal3.avif",
-                    category: "talons"
+                    category: "heels"
                 },
-               
-               
             ],
             accessories: [
                 {
@@ -1225,13 +1321,12 @@
                     badge: "Élégant"
                 },
                 {
-                    id: 34,
+                    id: 40,
                     name: "Sac à main",
                     price: 22900,
                     image: "sac7.jpg",
                     category: "bags"
                 },
-               
                 {
                     id: 18,
                     name: "Montre femme",
@@ -1253,7 +1348,6 @@
                     image: "sac8.avif",
                     category: "bags"
                 },
-               
                 {
                     id: 20,
                     name: "sac élégant",
@@ -1284,7 +1378,6 @@
                     image: "collier3.jpg",
                     category: "jewelry"
                 },
-            
                 {
                     id: 34,
                     name: "Sac à main",
@@ -1292,7 +1385,6 @@
                     image: "sac4.avif",
                     category: "bags"
                 },
-               
                 {
                     id: 38,
                     name: "Sac à main",
@@ -1300,7 +1392,6 @@
                     image: "sac5.avif",
                     category: "bags"
                 },
-               
             ]
         };
 
@@ -1324,6 +1415,29 @@
         const categoryTabs = document.querySelectorAll('.category-tab');
         const contactForm = document.getElementById('contact-form');
         const newsletterForm = document.getElementById('newsletter-form');
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('nav ul');
+
+        // Menu mobile
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Fermer le menu mobile quand on clique sur un lien - Version corrigée
+document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && navMenu) {
+            navMenu.classList.remove('active');
+        }
+        
+        // Empêche le comportement par défaut seulement pour les liens .nav-link
+        if (link.classList.contains('nav-link')) {
+            e.preventDefault();
+            const page = link.getAttribute('data-page');
+            showPage(page);
+        }
+    });
+});
 
         // Afficher les produits
         function displayProducts(products, container) {
@@ -1551,15 +1665,6 @@
             if (!cartIcon.contains(e.target) && !cartPreview.contains(e.target)) {
                 cartPreview.style.display = 'none';
             }
-        });
-
-        // Navigation
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const page = this.getAttribute('data-page');
-                showPage(page);
-            });
         });
 
         // Filtrage par catégorie
